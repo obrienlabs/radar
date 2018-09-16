@@ -17,7 +17,7 @@
         <version>3.2</version>
         <configuration>
           <source>1.8</source>
-          <target>1.7</target>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>
@@ -124,7 +124,7 @@
     <dependency>
         <groupId>org.obrienlabs</groupId>
         <artifactId>radar.model</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.5-SNAPSHOT</version>
     </dependency>
   </dependencies>  
 </project>
