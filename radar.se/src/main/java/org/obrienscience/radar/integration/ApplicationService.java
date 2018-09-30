@@ -98,8 +98,8 @@ public abstract class ApplicationService implements Runnable {
 	public static final int DEC_MIN_INTERVAL_ITERATIONS_FOR_SAT = 3;
     public static final int DEC_MIN_INTERVAL_ITERATIONS_FOR_LIGHTNING = 6;
     public static final int LIGHTNING_REFRESH_MINUTE = 31;//27;
-	public static final long MIN_DELAY_BETWEEN_URL_CAPTURE_MS = 800;//9667 - 258; // 5 min / 31 sites ( 8 sec or .258 processing time)
-    public static final long MAX_DELAY_BETWEEN_URL_CAPTURE_MS = 2900;
+	public static final long MIN_DELAY_BETWEEN_URL_CAPTURE_MS = 4500;//800;//9667 - 258; // 5 min / 31 sites ( 8 sec or .258 processing time)
+    public static final long MAX_DELAY_BETWEEN_URL_CAPTURE_MS = 8900;//2900;
     public static final int SWEEP_INTERVAL_MIN = 10;
     public static final int NUMBER_RADAR_SITES = 31;
     public static final int NUMBER_SAT_SITES = 9;
@@ -218,7 +218,7 @@ public abstract class ApplicationService implements Runnable {
     public static final String CURRENT_LIGHTNING_URL_POSTFIX = ".png";   
 	public static final String HISTORICAL_RADAR_URL_PREFIX_PRE_20110920 = "http://www.climate.weatheroffice.gc.ca/radar/get_image.cfm?img=";
     public static final String HISTORICAL_RADAR_URL_PREFIX = "http://www.climate.weatheroffice.gc.ca/radar/image.php?time=";
-    public static final String HISTORICAL_RADAR_URL_SEARCH_PAGE_PREFIX = "http://www.climate.weatheroffice.gc.ca/radar/index_e.html?RadarSite=";
+    public static final String HISTORICAL_RADAR_URL_SEARCH_PAGE_PREFIX = "http://climate.weather.gc.ca/radar/index_e.html?site=";//http://www.climate.weatheroffice.gc.ca/radar/index_e.html?RadarSite=";
 	public static final String HISTORICAL_RADAR_URL_POSTFIX_PRE_20110920 = ":RADAR:GIF";
 	public static final String[] HISTORICAL_RADAR_URL_FRAGMENTS = {
 		"_PRECIP_RAIN_WEATHEROFFICE_ARC~PRECIP,125,18,MPRATE",

@@ -78,8 +78,8 @@ public class PreProcessor extends ImageProcessor {
     	// set static variables
     	//RING_FILTER_IMAGE = loadImage("xft/XFT_ring_filter", "gif");
 	    //statImage = new BufferedImage (RING_FILTER_IMAGE.getWidth(), RING_FILTER_IMAGE.getHeight(), BufferedImage.TYPE_INT_RGB);
-        //statView = aView;
-        //statView.setBufferedImage(statImage);     
+        statView = aView;
+        statView.setBufferedImage(statImage);     
         statView.applicationInit();
         statView.setFlash(false);
     }

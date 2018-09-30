@@ -18,6 +18,7 @@ public class HistoricalRadarService extends RadarService {
     //private int offsetMonth;
     public static final boolean IS_HISTORICAL = true;
     private Calendar universalTime;
+    private Calendar universalTimeToPersist;
     private int siteIndex = -1;
 
     public HistoricalRadarService(int year, int month, int day, String site) {
@@ -27,6 +28,16 @@ public class HistoricalRadarService extends RadarService {
     		universalTime.set(Calendar.YEAR, year);
     		universalTime.set(Calendar.MONTH, month);
     		universalTime.set(Calendar.DAY_OF_MONTH, day);
+    		universalTime.add(Calendar.HOUR, -14);
+    	}
+    	universalTimeToPersist = GregorianCalendar.getInstance();
+    	if(year > 0 && month > 0 && day > 0) {
+    		universalTimeToPersist.set(Calendar.YEAR, year);
+    		universalTimeToPersist.set(Calendar.MONTH, month);
+    		universalTimeToPersist.set(Calendar.DAY_OF_MONTH, day);
+    		universalTimeToPersist.add(Calendar.HOUR, -14);
+    		// first image is always 10-16 min ahead
+    		universalTimeToPersist.add(Calendar.MINUTE, SWEEP_INTERVAL_MIN);
     	}
     	if(null != site) {
     		siteIndex = Integer.parseInt(site);
@@ -34,41 +45,15 @@ public class HistoricalRadarService extends RadarService {
     		
     	}
 		System.out.println("_Time set to " + universalTime.toString());
+		System.out.println("_Time set to " + universalTimeToPersist.toString() + " for writes");
     }
-    
-    /*public void setOffsetDate(int year, int month, int day) {
-        offsetDay = day;
-        offsetMonth = month;
-        offsetYear = year;
-    }*/
-
-    //@Override
-    public void persistImage(Site site, BufferedImage image, String name) {
-    }
-    
-	
-	/**
-     * http://www.climate.weatheroffice.gc.ca/radar/index_e.html
-     * ?RadarSite=XFT&sYear=2011&sMonth=8&sDay=7&sHour=19&sMin=40&sec=00&Duration=2&ImageType=Default
-	 */
-    @Override
-	public void performCapture(Site site, boolean persist, long minDelayMS, long maxDelayMS) throws Exception {
-    	
-    }
-    
+   
     public void performCapture(List<Site> sites, boolean persist, long minDelayMS, long maxDelayMS, RadarView view) throws Exception {
         PreProcessor preProcessor = new PreProcessor();
         preProcessor.setApplicationServiceOnView(this);
         BufferedImage reducedImage = null;
         String outputPath = null;
         String filenameRoot = null;
-	    // search for missing images from current date - down
-	    //Calendar universalTime = GregorianCalendar.getInstance();
-	    //universalTime.add(Calendar.HOUR, 4); // get UTC
-	    //universalTime.add(Calendar.DAY_OF_MONTH, -day); // start with a day less
-	    //universalTime.add(Calendar.DAY_OF_MONTH, -35);
-	    //universalTime.add(Calendar.MONTH, -4);
-		// start at 20110513
 	    String imageName = null;
 	    List<Site> siteFilterList = null;
 	    if(siteIndex > -1) {
@@ -80,9 +65,12 @@ public class HistoricalRadarService extends RadarService {
 		for(;;) {
 		    // remember to subtract 10 min. or sleep 10 min
 		    universalTime.add(Calendar.MINUTE, -SWEEP_INTERVAL_MIN);
+		    universalTimeToPersist.add(Calendar.MINUTE, -SWEEP_INTERVAL_MIN);
+		    
         	for(Site site : siteFilterList) {
         	    // look for image on hd, get it if missing, wait random time
-        	    String filename = getResourceManager().getTimestampFileFormat(universalTime, "_");
+        	    String filename = getResourceManager().getTimestampFileFormat(universalTimeToPersist, "_");
+        	    String filenameCapture = getResourceManager().getTimestampFileFormat(universalTime, "_");
         	    String filenamePath = getResourceManager().getFilename(site, filename, CURRENT_RADAR_URL_POSTFIX);
         	    BufferedImage image = loadImage(filenamePath);
         	    if(null == image) {
@@ -91,24 +79,24 @@ public class HistoricalRadarService extends RadarService {
         	            // as of 20110920 : we cannot directly get the image name - it is encoded - get the page first
         	            StringBuffer historicalURL  = new StringBuffer(HISTORICAL_RADAR_URL_SEARCH_PAGE_PREFIX);
         	            historicalURL.append(site.getName());
-        	            historicalURL.append("&sYear=");
+        	            historicalURL.append("&year=");
         	            historicalURL.append(universalTime.get(Calendar.YEAR));//"2011");
-        	            historicalURL.append("&sMonth=");
+        	            historicalURL.append("&month=");
         	            historicalURL.append(1 + universalTime.get(Calendar.MONTH));
-        	            historicalURL.append("&sDay=");
+        	            historicalURL.append("&day=");
         	            historicalURL.append(universalTime.get(Calendar.DAY_OF_MONTH));
-        	            historicalURL.append("&sHour=");
+        	            historicalURL.append("&hour=");
         	            if(universalTime.get(Calendar.AM_PM) > 0) {
         	                historicalURL.append((universalTime.get(Calendar.HOUR) + 12));
         	            } else {
         	                historicalURL.append((universalTime.get(Calendar.HOUR)));
         	            }
-        	            historicalURL.append("&sMin=");
+        	            historicalURL.append("&min=");
         	            historicalURL.append((((int)(universalTime.get(Calendar.MINUTE)) / 10)));
         	            historicalURL.append("0");
         	            historicalURL.append("&sec=");
         	            historicalURL.append("00");
-        	            historicalURL.append("&Duration=2&ImageType=Default");
+        	            historicalURL.append("&duration=2&image_type=PRECIPET_RAIN_WEATHEROFFICE");//Default");
         	            String historicalHTML = getResourceManager().captureURL(
                                 this,
                                 site, 
@@ -122,22 +110,38 @@ public class HistoricalRadarService extends RadarService {
         	            //"<img src='./image.php?time=07-AUG-11%2008.07.52.603743%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2008.28.04.148385%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2008.28.01.505846%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2008.37.49.863105%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2008.47.47.521850%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2008.57.51.041539%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2009.07.56.197892%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2009.17.49.274688%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2009.27.51.785989%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2009.37.52.981699%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","<img src='./image.php?time=07-AUG-11%2009.47.52.122318%20PM&amp;site=XFT' class='noBorder' alt='Radar Image' />","");
         	            //System.out.println(historicalHTML);
         	            // get first image
-        	            String searchMatch = "image.php?time=";
+        	            
+        	            // 2018
+        	            // http://climate.weather.gc.ca/radar/image_e.html?time=28-SEP-18+09.56.42.467757+PM&site=NAT
+        	            // from
+        	            // blobArray = [
+        	            //'/radar/image_e.html?time=28-SEP-18+09.56.42.467757+PM&site=NAT',
+        	            String searchMatch = "image_e.html?time="; // image.php?time=
         	            int searchPosition1 = historicalHTML.indexOf(searchMatch);
         	            if(searchPosition1 < 1) {
                             //System.out.println(historicalHTML);
         	            	imageName = null;
         	            	System.out.println(filename + " not available - skipping");
         	            } else {
-        	            	int searchPosition2 = historicalHTML.indexOf("&amp;site=", searchPosition1);
+        	            	int searchPosition2 = historicalHTML.indexOf("&site=", searchPosition1);
         	            	String codedFragment = historicalHTML.substring(searchPosition1 + searchMatch.length(), searchPosition2); 
-        	            	//System.out.println(codedFragment);
+        	            	System.out.println(codedFragment);
         	            	imageName = getResourceManager().captureImage(
+        	            			this,
+        	            			site,
+        	            			filename,
+        	            			//getURL(site, universalTime, 0, codedFragment),
+        	            			"http://climate.weather.gc.ca/radar/image_e.html?time=" 
+        	            					+ codedFragment + "&site=" + site.getName(),
+        	            			""
+        	            			);
+        	            	
+        	            	/*imageName = getResourceManager().captureImage(
         	            			this,
         	            			site, 
         	            			filename, 
         	            			getURL(site, universalTime, 0, codedFragment),
-        	            			CURRENT_RADAR_URL_POSTFIX);				
+        	            			CURRENT_RADAR_URL_POSTFIX);	*/			
         	            }
         	        } catch (Exception e) {
         	            e.printStackTrace();
@@ -153,7 +157,8 @@ public class HistoricalRadarService extends RadarService {
         	                setCurrentImage(image);//reducedImage);
         	                reducedImage = preProcessor.doFilter(0, image, RadarSite.PRECIP_INTENSITY_COLOR_CODES_SIZE - 1);        	            
         	                filenameRoot = filename.substring(0, filename.length());
-        	                outputPath = PreProcessor.FILTERED_DATA_DIR + site.getName() + "/" + site.getName() + "_" + filenameRoot + "_f";
+        	                outputPath = PreProcessor.FILTERED_DATA_DIR + site.getName() 
+        	                	+ "/" + site.getName() + "_" + filenameRoot + "_f";
         	                preProcessor.writeImage(reducedImage, outputPath, "gif");
         	                if(null != view) {
         	                	view.setBufferedImage(reducedImage);
@@ -173,6 +178,20 @@ public class HistoricalRadarService extends RadarService {
 	    }
 	}
 
+
+    //@Override
+    public void persistImage(Site site, BufferedImage image, String name) {
+    }
+    
+	
+	/**
+     * http://www.climate.weatheroffice.gc.ca/radar/index_e.html
+     * ?RadarSite=XFT&sYear=2011&sMonth=8&sDay=7&sHour=19&sMin=40&sec=00&Duration=2&ImageType=Default
+	 */
+    @Override
+	public void performCapture(Site site, boolean persist, long minDelayMS, long maxDelayMS) throws Exception {
+    	
+    }
 	/**
 	 * 
 	 * @param siteName
@@ -261,9 +280,12 @@ public class HistoricalRadarService extends RadarService {
             RadarView aRadarView = new RadarView();
             aRadarView.applicationInit();
             //aRadarView.setApplicationService(aService);
-            aRadarView.setFlash(true);
+            //aRadarView.setFlash(true);
         	//aService.set
         	aService.performCapture(aRadarView);
+        	// 2018
+        	// http://climate.weather.gc.ca/radar/index_e.html?site=NAT&year=2018&month=9&day=28&hour=21&minute=40&duration=2&image_type=PRECIPET_RAIN_WEATHEROFFICE
+        	// http://www.climate.weatheroffice.gc.ca/radar/index_e.html?RadarSite=WMB&sYear=2018&sMonth=9&sDay=1&sHour=22&sMin=30&sec=00&Duration=2&ImageType=PRECIPET_RAIN_WEATHEROFFICE
         } catch (Exception e) {
         	e.printStackTrace();
         }

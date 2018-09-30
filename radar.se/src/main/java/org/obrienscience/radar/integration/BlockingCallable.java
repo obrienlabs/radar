@@ -82,6 +82,8 @@ public class BlockingCallable<T> implements Callable<T> {
 		BufferedInputStream aBufferedInputStream = null;
 		/** stream to file system */
 		String filenamePath = ResourceManager.getFilename(unprocessedImagePath, site, urlAppend, postfix, subdir);
+		// 2018 historical add GIF
+		filenamePath += ".GIF";
 		FileOutputStream aFileWriter = new FileOutputStream(filenamePath);
 		System.out.println("_Writing to: " + filenamePath);
 		/** connection based on the aURL */
