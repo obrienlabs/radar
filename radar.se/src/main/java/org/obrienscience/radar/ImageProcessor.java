@@ -272,9 +272,10 @@ public abstract class ImageProcessor implements Runnable {
             for(int x=0;x<prevImage.getWidth();x++) {
                 if(prevImage.getRGB(x, y) != nextImage.getRGB(x, y)) {
                 	pixelsDifferent += 1;
-                	/*if(pixelsDifferent > pixelDiffThreashold) {
+                	// perf: short circuit
+                	if(pixelsDifferent > pixelDiffThreashold) {
                 		return pixelsDifferent;
-                	 }*/
+                	 }
                 }
             }
         }        

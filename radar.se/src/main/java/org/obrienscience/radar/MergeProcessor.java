@@ -123,7 +123,8 @@ public class MergeProcessor extends ImageProcessor {
         
         // don't use use DuplicationProcessor
         //processor.process(site,"/_radar_unprocessed_image_to_persist", "/Users/michaelobrien/_filtered_data/");
-        processor.process(site,"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist/", "/Volumes/8tb/_radar_unprocessed_image_to_persist/");
+        processor.process(site,"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist/", 
+        		"/Volumes/8tb/_radar_unprocessed_image_to_persist/");
 	}
 
 

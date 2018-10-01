@@ -17,6 +17,7 @@ import org.obrienscience.radar.integration.SatService;
 
 public class DuplicationProcessor extends ImageProcessor {
 
+	public static final int PIXEL_DIFF_THRESHOLD = 10;
 	@Override
 	public void run() {
 	}
@@ -148,14 +149,14 @@ public class DuplicationProcessor extends ImageProcessor {
                         		prev = input;
                         	} else {
                         		// need to solve interleaved out of order in ecan_2012_02_16_19_10_1070_100
-                        		int diff = isDifferent(prev, input,10);
+                        		int diff = isDifferent(prev, input,PIXEL_DIFF_THRESHOLD);
                         		if(diff < 1) {
                         			//System.out.println("Removing: " + filename);
                                     System.out.print("x");
                                     //deleteImage(outputPath,"jpg");
                                     files[i].delete();
                         		} else {
-                        			if(diff < 10) {
+                        			if(diff < PIXEL_DIFF_THRESHOLD) {
                         				System.out.print("Z");
                         			} else {
                         				//writeImage(input, outputPath, "jpg");
@@ -235,7 +236,7 @@ public class DuplicationProcessor extends ImageProcessor {
 	
         DuplicationProcessor processor = new DuplicationProcessor();
         //site = "xwl";
-        for(int i=0;i<sites.length;i++) {
+/*        for(int i=0;i<sites.length;i++) {
         	processor.merge(sites[i], 
         		"/Volumes/8tb/_radar_unprocessed_image_to_persist", // to
 //        		"/Volumes/ppro2/_radar_unprocessed_image_to_persist" // from
@@ -244,10 +245,10 @@ public class DuplicationProcessor extends ImageProcessor {
         		"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist"
         	);
         }
-        for(int i=0;i<sitesSat.length;i++) {
+*/        for(int i=0;i<sitesSat.length;i++) {
         ////processor.process(site,"/_radar_unprocessed_image_to_persist", "/Users/michaelobrien/_filtered_data/");
-        //processor.process(sitesSat[i],"F:/_radar_unprocessed_image_to_persist");//, "/Volumes/gdrive2/_filtered_data/");
- //       processor.process(sitesSat[i],"/Users/michaelobrien/_radar_unprocessed_image_to_persist");//, "/Volumes/gdrive2/_filtered_data_mbp/");
+        processor.process(sitesSat[i],"e:/_radar_unprocessed_image_to_persist");//, "/Volumes/gdrive2/_filtered_data/");
+        //processor.process(sitesSat[i],"e:/Users/michaelobrien/_radar_unprocessed_image_to_persist");//, "/Volumes/gdrive2/_filtered_data_mbp/");
         //processor.process(site,"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist/", "/Volumes/8tb/_radar_unprocessed_image_to_persist/");
 
         }
