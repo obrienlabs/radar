@@ -41,9 +41,9 @@ public class DuplicationProcessor extends ImageProcessor {
 		}
 		
 	}
-	public void merge(String _site, String _aDir, String _bDir){//, String _cDir) {
-        String aDir = _aDir + "/" + _site + "/";
-        String bDir = _bDir + "/" + _site + "/";
+	public void merge(String _site, String _destDir, String _srcDir){//, String _cDir) {
+        String aDir = _destDir + "/" + _site + "/";
+        String bDir = _srcDir + "/" + _site + "/";
         //String cDir = _cDir + "/" + _site + "/";
         String filename;
         long filesize;
@@ -236,18 +236,22 @@ public class DuplicationProcessor extends ImageProcessor {
 	
         DuplicationProcessor processor = new DuplicationProcessor();
         //site = "xwl";
-/*        for(int i=0;i<sites.length;i++) {
-        	processor.merge(sites[i], 
-        		"/Volumes/8tb/_radar_unprocessed_image_to_persist", // to
+        for(int i=0;i<sites.length;i++) {
+            processor.merge(sites[i],
+            		"E:/_radar_unprocessed_image_to_persist/",
+            		"X:/_to_process/mm3_2017/_radar_unprocessed_image_to_persist/");
+        	//rocessor.merge(sites[i], 
+//       		"/Volumes/8tb/_radar_unprocessed_image_to_persist", // to
 //        		"/Volumes/ppro2/_radar_unprocessed_image_to_persist" // from
 //        		"/Users/michaelobrien/_radar_unprocessed_image_to_persist", // new
 //        		"/_radar_unprocessed_image_to_persist", // new
-        		"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist"
-        	);
+//        		"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist"
+//        	);
         }
-*/        for(int i=0;i<sitesSat.length;i++) {
+        for(int i=0;i<sitesSat.length;i++) {
         ////processor.process(site,"/_radar_unprocessed_image_to_persist", "/Users/michaelobrien/_filtered_data/");
-        processor.process(sitesSat[i],"e:/_radar_unprocessed_image_to_persist");//, "/Volumes/gdrive2/_filtered_data/");
+        //processor.process(sitesSat[i],"e:/_radar_unprocessed_image_to_persist");//, "/Volumes/gdrive2/_filtered_data/");
+//        processor.process(sitesSat[i],"X:/_to_process/mm3_2017/_radar_unprocessed_image_to_persist");
         //processor.process(sitesSat[i],"e:/Users/michaelobrien/_radar_unprocessed_image_to_persist");//, "/Volumes/gdrive2/_filtered_data_mbp/");
         //processor.process(site,"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist/", "/Volumes/8tb/_radar_unprocessed_image_to_persist/");
 

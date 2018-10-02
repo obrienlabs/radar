@@ -29,6 +29,7 @@ public class MergeProcessor extends ImageProcessor {
 	
 	/**
 	 * Sort and delete all duplicate images
+	 * deprecated - use DuplicationProcessor
 	 * @param site
 	 */
 	public void process(String site, String anInputDir, String anOutputDir) {
@@ -121,10 +122,12 @@ public class MergeProcessor extends ImageProcessor {
 	
         MergeProcessor processor = new MergeProcessor();
         
+        
         // don't use use DuplicationProcessor
-        //processor.process(site,"/_radar_unprocessed_image_to_persist", "/Users/michaelobrien/_filtered_data/");
-        processor.process(site,"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist/", 
-        		"/Volumes/8tb/_radar_unprocessed_image_to_persist/");
+//        processor.process(site,"X:/_to_process/mm3_2017/_radar_unprocessed_image_to_persist/", 
+  //      		"E:/_radar_unprocessed_image_to_persist/");
+        //processor.process(site,"/Volumes/Untitled/_to_process/biomos14/_radar_unprocessed_image_to_persist/", 
+        		//"/Volumes/8tb/_radar_unprocessed_image_to_persist/");
 	}
 
 
