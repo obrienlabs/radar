@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.obrienlabs</groupId>
     <artifactId>radar.root</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6-SNAPSHOT</version>
   </parent>
   <artifactId>radar.se</artifactId>
   <name>radar.se</name>

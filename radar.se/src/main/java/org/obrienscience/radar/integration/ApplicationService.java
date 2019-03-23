@@ -104,7 +104,8 @@ public abstract class ApplicationService implements Runnable {
     public static final int NUMBER_RADAR_SITES = 31;
     public static final int NUMBER_SAT_SITES = 9;
 	public static final String[] RADAR_SITE_IDENTIFIERS = {
-		"WMN",
+		//"WMN",
+			"CASBV", //18_06
 		"XLA",
 		"WMB",
 		"XAM",
@@ -115,21 +116,25 @@ public abstract class ApplicationService implements Runnable {
 		"XME", // w nfld
 		"WTP", // e nfld
 		"XNI", // superior		
-		"XTI", // timmins
+		//"XTI", // timmins
+			"CASRF",
 		"WGJ", // sault
 		"WKR",
 		"WSO",
 		"XDR",
 		"WBI",
 		"XWL",
-		"XFW", // brandon
+		//"XFW", // brandon
+			"CASFW",
 		"XBE", // regina
-		"XRA", // saskatoon
+		//"XRA", // saskatoon
+			"CASRA",
 		"XBU", // medicine hat
 		"WHN", // edmonton
 		"XSM", // calgary
 		"WHK", // edmonton
-		"WWW", // grande prarie
+		//"WWW", // grande prarie
+			"CASSR",
 		"XSS", // kelowna
 		"XPG",
 		"WUJ", // vancouver
@@ -212,7 +217,8 @@ public abstract class ApplicationService implements Runnable {
         18
     };
 
-	public static final String CURRENT_URL_PREFIX = "http://www.weatheroffice.gc.ca/data/radar/temp_image/";
+	//public static final String CURRENT_URL_PREFIX = "http://www.weatheroffice.gc.ca/data/radar/temp_image/";
+	public static final String CURRENT_URL_PREFIX = "https://weather.gc.ca/data/radar/temp_image/";
 	public static final String CURRENT_RADAR_URL_POSTFIX = ".GIF";
 	public static final String CURRENT_SAT_URL_POSTFIX = "_1070_100.jpg";	
     public static final String CURRENT_LIGHTNING_URL_POSTFIX = ".png";   
@@ -232,11 +238,13 @@ public abstract class ApplicationService implements Runnable {
     // post 20120501 WMN, WBI, XFT, 
     //public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 20130709 prior
     // 20140102 (wmb=cappi)
-	public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 20130709 prior
+	//public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 20130709 prior
 	// 20140112 xss=cappi
 	//public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1 };// 20130709 prior
 	// 20150131 PRECIP_SNOW
 	//public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 201340102 prior
+	// 20190323 (wmb=cappi)
+	public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 };// 20130709 prior
 
 	public static final String[] SITE_GPSS = {
 		"",

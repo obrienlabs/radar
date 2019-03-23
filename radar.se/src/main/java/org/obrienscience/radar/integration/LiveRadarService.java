@@ -12,6 +12,12 @@ import org.obrienscience.radar.model.Reading;
 import org.obrienscience.radar.model.Site;
 import org.obrienscience.radar.model.Sweep;
 
+/**
+ * 20190322
+ * from http://www.weatheroffice.gc.ca/data/radar/temp_image/WMN/WMN_PRECIP_RAIN_2019_03_23_12_20.GIF
+ * to   https://weather.gc.ca/data/radar/temp_image/XFT/XFT_PRECIP_SNOW_2019_03_23_17_40.GIF
+ */
+
 public class LiveRadarService extends RadarService {
 
 	public LiveRadarService() {
