@@ -36,6 +36,7 @@ public class BlockingCallable<T> implements Callable<T> {
 	private String unprocessedImagePath;
 	//private FutureTask<T> task;
 	
+	
 	public BlockingCallable(//FutureTask<T> task, 
 			ApplicationService service,
 			Site site,

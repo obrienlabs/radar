@@ -222,16 +222,16 @@ public abstract class ApplicationService implements Runnable {
 	public static final String CURRENT_RADAR_URL_POSTFIX = ".GIF";
 	public static final String CURRENT_SAT_URL_POSTFIX = "_1070_100.jpg";	
     public static final String CURRENT_LIGHTNING_URL_POSTFIX = ".png";   
-	public static final String HISTORICAL_RADAR_URL_PREFIX_PRE_20110920 = "http://www.climate.weatheroffice.gc.ca/radar/get_image.cfm?img=";
+	//public static final String HISTORICAL_RADAR_URL_PREFIX_PRE_20110920 = "http://www.climate.weatheroffice.gc.ca/radar/get_image.cfm?img=";
     public static final String HISTORICAL_RADAR_URL_PREFIX = "http://www.climate.weatheroffice.gc.ca/radar/image.php?time=";
     public static final String HISTORICAL_RADAR_URL_SEARCH_PAGE_PREFIX = "http://climate.weather.gc.ca/radar/index_e.html?site=";//http://www.climate.weatheroffice.gc.ca/radar/index_e.html?RadarSite=";
-	public static final String HISTORICAL_RADAR_URL_POSTFIX_PRE_20110920 = ":RADAR:GIF";
+	//public static final String HISTORICAL_RADAR_URL_POSTFIX_PRE_20110920 = ":RADAR:GIF";
 	public static final String[] HISTORICAL_RADAR_URL_FRAGMENTS = {
 		"_PRECIP_RAIN_WEATHEROFFICE_ARC~PRECIP,125,18,MPRATE",
 		"_CAPPI_RAIN_WEATHEROFFICE_ARC~CAPPI,1.5,AGL,MPRATE"	};
 	public static final int[] HISTORICAL_RADAR_URL_FRAGMENTS_INDEX = { 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 	//public static final String[] CURRENT_RADAR_URL_MIDFIX = { "_PRECIP_RAIN_", 	"_CAPPI_RAIN_" }; 	
-	public static final String[] CURRENT_RADAR_URL_MIDFIX = { "_PRECIP_RAIN_", 	"_CAPPI_RAIN_", "_PRECIP_SNOW_"}; 	
+	public static final String[] CURRENT_RADAR_URL_MIDFIX = { "_PRECIP_RAIN_", 	"_CAPPI_RAIN_", "_PRECIP_SNOW_", "_COMP_PRECIP_RAIN", "_COMP_PRECIP_SNOW_"};
     //public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };	
     // post 201320709 XFT TO PRECIP,XSI,XBE,XTI TO CAPPI, - all down
     //public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0 };// 20130709 prior	
@@ -244,7 +244,9 @@ public abstract class ApplicationService implements Runnable {
 	// 20150131 PRECIP_SNOW
 	//public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 201340102 prior
 	// 20190323 (wmb=cappi)
-	public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 };// 20130709 prior
+	//public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 };// 20130709 prior
+	// 20190720 
+	public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 20130709 prior
 
 	public static final String[] SITE_GPSS = {
 		"",

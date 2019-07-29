@@ -57,6 +57,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.obrienscience.radar.RadarView;
 import org.obrienscience.radar.model.RadarSite;
 import org.obrienscience.radar.model.Site;
 import org.obrienscience.radar.model.Sweep;
@@ -66,6 +67,9 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+
+import javax.imageio.*;
+import java.nio.channels.*;
 
 /**
  * Images are stored in the file system and referenced from the database
@@ -171,7 +175,9 @@ public class ResourceManager {
     public String captureImage(String unprocessedImagePath, ApplicationService service, Site site, 
     		String urlAppend, String fullURL, String postfix, String subdir) throws Exception {
         // use a timed callable
-    	return blockingCallable(unprocessedImagePath, service, site, urlAppend, fullURL, postfix, subdir);
+    	//return blockingCallable(unprocessedImagePath, service, site, urlAppend, fullURL, postfix, subdir);
+	    // 20190324
+	    return blockingCallable0(unprocessedImagePath, service, site, urlAppend, fullURL, postfix, subdir);
     }
 	
     
@@ -289,8 +295,170 @@ public class ResourceManager {
         //}
         return fileName;
     }
+	/*private String blockingCallable1(final String unprocessedImagePath, final ApplicationService service, final Site site,
+	                                 final String urlAppend, final String fullURL, final String postfix, final String subdir) {
+		boolean _found = false;
+		String fileName = null;
+		//Image image = null;
+		String filenamePath = ResourceManager.getFilename(unprocessedImagePath, site, urlAppend, postfix, subdir);
+		System.out.println("_Writing to: " + filenamePath);
 
+
+		//image = ImageIO.read(url);
+		ReadableByteChannel readableByteChannel = Channels.newChannel(fullURL.openStream());
+		URL aURL = null;
+		try {
+			aURL = new URL(fullURL);
+			FileOutputStream fileOutputStream = new FileOutputStream(FILE_NAME);
+			FileChannel fileChannel = fileOutputStream.getChannel();
+			fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+		} catch () {
+
+		}
+
+		return fileName;
+	}*/
+
+
+
+    
     private String blockingCallable0(final String unprocessedImagePath, final ApplicationService service, final Site site, 
+    		final String urlAppend, final String fullURL, final String postfix, final String subdir) {
+    	boolean _found = false;
+    	String fileName = null;
+    	FutureTask<String> aFutureTask = null;
+    	
+    	try {
+    		aFutureTask = new FutureTask<String>(new Callable<String>() {        	
+        		public String call() throws Exception {
+        		   	FileOutputStream fileOutputStream = null;
+        	    	FileChannel fileChannel = null;
+
+        		String imageName = null;
+        		
+        		/** this stream is used to get the BufferedInputStream below */
+ //       		InputStream abstractInputStream = null;
+ //       		/** stream to read from the FTP server */
+ //       		BufferedInputStream aBufferedInputStream = null;
+        		/** stream to file system */
+        		String filenamePath = ResourceManager.getFilename(unprocessedImagePath, site, urlAppend, postfix, subdir);
+//        		FileOutputStream aFileWriter = new FileOutputStream(filenamePath);
+        		System.out.println("_Writing to: " + filenamePath);
+//        		HttpURLConnection aURLConnection = null;
+        		URL 	aURL = null;
+        		long byteCount = 0;			
+//        		int bytesRead;
+        		long tsstart = System.currentTimeMillis();
+        		try {
+        			aURL  = new URL(fullURL);
+        	    	ReadableByteChannel readableByteChannel = Channels.newChannel(aURL.openStream());
+        	    	fileOutputStream = new FileOutputStream(filenamePath);
+        	    	fileChannel = fileOutputStream.getChannel();
+        	    	fileOutputStream.getChannel()
+        	    	  .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+        	    	
+//        			aURLConnection = (HttpURLConnection)aURL.openConnection();
+        			// fake the agent
+//        			HttpURLConnection.setDefaultAllowUserInteraction(true);
+//        			aURLConnection.setRequestProperty("Upgrade-Insecure-Requests", "1");
+//        			aURLConnection.setRequestProperty("User-Agent", //"Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; en-US");
+//        					"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+        			//aURLConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
+//        			abstractInputStream = aURLConnection.getInputStream();
+//        			aBufferedInputStream = new BufferedInputStream(abstractInputStream);
+//        			byteCount = 0;
+        			System.out.println("Downloading from: " + fullURL);
+//        			byte b[] = new byte[ResourceManager.INPUT_BUFFER_SIZE];
+//        			while ((bytesRead = aBufferedInputStream.read(
+//        			        b, 				// name of buffer
+//        			        0, 				// start of buffer to start reading into
+//        			        b.length		// save actual bytes read, not default max buffer size
+//        			    )) >= 0 && ((System.currentTimeMillis() - tsstart) < 30000)) {
+        				byteCount = fileChannel.size();//+= bytesRead;
+//        				aFileWriter.write(b, 0, b.length);
+				        //aFileWriter.write(b, 0, bytesRead);//b.length);
+
+        				Thread.sleep(1);
+        				if(Thread.currentThread().isInterrupted() || Thread.currentThread().isDaemon()) {//aFutureTask.isCancelled()) {
+        					throw new InterruptedException();
+        				}
+//        			} // while
+        			System.out.println((System.currentTimeMillis() - tsstart) + "ms:HTML capture/processing complete: bytes: " + byteCount);
+//        			aBufferedInputStream.close();
+//        			if(byteCount > 6144) {
+        				imageName = urlAppend;
+//        				service.setCurrentImage(filenamePath);
+//        			} else {
+//        				System.out.println("Truncated download of " + byteCount + " bytes: " + urlAppend);
+//        			}
+//        			if(null != aFileWriter) {
+//        			    aFileWriter.flush();
+//        			    aFileWriter.close();
+//        			}
+        		} catch (InterruptedException ie) {
+        			System.out.println("_Interrupted: " + fullURL);
+        		} catch (IllegalStateException e) {
+        			System.out.println(e.getMessage());
+        		} catch (UnknownServiceException e) {
+        			System.out.println(e.getMessage());
+        		} catch (MalformedURLException e) {
+        			System.out.println(e.getMessage());
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        			System.out.println(e.getMessage());
+        		} catch (Exception e) {
+        			System.out.println(e.getMessage());
+        		} finally {
+        	  		try {
+        	  			if(fileOutputStream != null) {
+        	  				fileOutputStream.close();
+        	  			}
+        	    		} catch (IOException fe) {
+        	    			fe.printStackTrace();
+        	    		}
+        	  		
+/*
+        			if(aBufferedInputStream != null) {
+        				aBufferedInputStream.close();
+        			} // if
+        			if(aFileWriter != null) {
+        				//aFileWriter.flush(); 
+        				aFileWriter.close();
+        			}*/
+        		} // finally
+        		
+        		// only return a non-null image name if the image is invalid
+        		return imageName;
+        		}});
+        	executorService.submit(aFutureTask);
+        	fileName = aFutureTask.get(120, TimeUnit.SECONDS); // returns an immediate result or throws TimeoutException
+        		_found = true;
+        	} catch (TimeoutException te) {
+        		System.out.println("Timeout on: " + fullURL);
+        		te.printStackTrace();
+        		_found = false;
+        		aFutureTask.cancel(true); 
+        	} catch (InterruptedException ie) {
+        		ie.printStackTrace();
+        		_found = false;
+        	} catch (ExecutionException ee) {
+        		ee.printStackTrace();
+        		_found = false;
+        	} finally {
+
+        	}
+        	// verify that we returned normally or had a TimeoutException
+        	if(_found) {
+        	}
+        //} catch ( Exception e) {
+        //    e.printStackTrace();
+        //} finally {
+        //}
+        return fileName;
+    }
+
+    /* data corruption saving under http pre 20190720 */
+    private String blockingCallable0old(final String unprocessedImagePath, final ApplicationService service, final Site site, 
     		final String urlAppend, final String fullURL, final String postfix, final String subdir) {
     	boolean _found = false;
     	String fileName = null;
@@ -331,7 +499,10 @@ public class ResourceManager {
         			aURLConnection = (HttpURLConnection)aURL.openConnection();
         			// fake the agent
         			HttpURLConnection.setDefaultAllowUserInteraction(true);
-        			aURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; en-US");
+        			aURLConnection.setRequestProperty("Upgrade-Insecure-Requests", "1");
+        			aURLConnection.setRequestProperty("User-Agent", //"Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; en-US");
+        					"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+        			//aURLConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
         			abstractInputStream = aURLConnection.getInputStream();
         			aBufferedInputStream = new BufferedInputStream(abstractInputStream);
         			byteCount = 0;
@@ -343,8 +514,10 @@ public class ResourceManager {
         			        b.length		// save actual bytes read, not default max buffer size
         			    )) >= 0 && ((System.currentTimeMillis() - tsstart) < 30000)) {
         				byteCount += bytesRead;
-        				aFileWriter.write(b, 0, bytesRead);//b.length);
-        				Thread.sleep(10);
+        				aFileWriter.write(b, 0, b.length);
+				        //aFileWriter.write(b, 0, bytesRead);//b.length);
+
+        				Thread.sleep(1);
         				if(Thread.currentThread().isInterrupted() || Thread.currentThread().isDaemon()) {//aFutureTask.isCancelled()) {
         					throw new InterruptedException();
         				}
@@ -631,7 +804,8 @@ public class ResourceManager {
     // 20110928_000000
 	public String getTimestampFileFormat(Calendar universalTime, String delimeter, String midfix, String postfix, boolean dropMin) {//, int extraMinOffset) {
 		// subtract - likely 20 min first  (for satellite)
-        //universalTime.add(Calendar.MINUTE);//, -extraMinOffset);
+		// 20190720 subtract 10 for some sites like CASBV
+        universalTime.add(Calendar.MINUTE, -10);//-extraMinOffset);
 
         StringBuilder buffer = new StringBuilder();
         buffer.append(universalTime.get(Calendar.YEAR));

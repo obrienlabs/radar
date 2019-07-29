@@ -1,6 +1,12 @@
 package org.obrienscience.radar.integration;
 
 import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -10,7 +16,9 @@ import org.obrienscience.radar.model.SatSite;
 import org.obrienscience.radar.model.Site;
 
 public class SatService extends ApplicationService {
-    public static final String CURRENT_URL_SAT_PREFIX = "http://www.weatheroffice.gc.ca/data/satellite/goes_";
+    //public static final String CURRENT_URL_SAT_PREFIX = "https://www.weatheroffice.gc.ca/data/satellite/goes_";
+    // 20190720
+	public static final String CURRENT_URL_SAT_PREFIX = "https://weather.gc.ca/data/satellite/goes_";
     public static final String CURRENT_URL_SAT_POSTFIX = "_1070_100.jpg";
 
     /*
@@ -36,6 +44,32 @@ http://www.weatheroffice.gc.ca/data/satellite/geos_nam_1070_100.jpg
     public void performCapture(Site site, boolean persist, long minDelayMS, long maxDelayMS) throws Exception {        
     }
 
+    public void performCaptureNIO(RadarView view) {
+    	URL url;
+    	String FILE_NAME = "/Users/michaelobrien/geos_ecan_1070_100.jpg";
+    	FileOutputStream fileOutputStream = null;
+    	FileChannel fileChannel = null;
+
+    	try {
+    	url = new URL("https://weather.gc.ca/data/satellite/goes_ecan_1070_100.jpg");
+    	//url = new URL("http://wiki.obrienlabs.cloud/download/attachments/983215/Screenshot%202019-07-02%2016.21.27.png?version=1&modificationDate=1562098913258&api=v2");
+    	ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+    	fileOutputStream = new FileOutputStream(FILE_NAME);
+    	fileChannel = fileOutputStream.getChannel();
+    	fileOutputStream.getChannel()
+    	  .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+    	
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		try {
+    		fileOutputStream.close();
+    		} catch (IOException fe) {
+    			fe.printStackTrace();
+    		}
+    	}
+    }
+    
     public void performCapture(RadarView view) {
         List<Site> sites = new ArrayList<>();
         for(int i=0;i<NUMBER_SAT_SITES;i++) {
