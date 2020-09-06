@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.obrienlabs</groupId>
     <artifactId>radar.root</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6-SNAPSHOT</version>
   </parent>
   <artifactId>radar.web</artifactId>
   <packaging>war</packaging>
@@ -124,7 +124,7 @@
     <dependency>
         <groupId>org.obrienlabs</groupId>
         <artifactId>radar.model</artifactId>
-        <version>0.0.5-SNAPSHOT</version>
+        <version>0.0.6-SNAPSHOT</version>
     </dependency>
   </dependencies>  
 </project>
