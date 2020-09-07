@@ -480,7 +480,7 @@ public class PreProcessor extends ImageProcessor {
         BufferedImage reducedImage = null;
         long filesize = 0;
         System.out.println("_retrieving files from:... " + inputDir);
-        RadarSite radarSite = null;
+        //RadarSite radarSite = null;
         try {
             File[] files = dir.listFiles();
             int counter = 0;
@@ -596,7 +596,7 @@ public class PreProcessor extends ImageProcessor {
 	 */
 	public static void main(String[] args) {
         String param = null;
-        String site = ApplicationService.RADAR_SITE_IDENTIFIERS[3];//."wbi_precip";//_te";
+        String site = ApplicationService.RADAR_SITE_IDENTIFIERS[0];//."wbi_precip";//_te";
         if(null != args && args.length > 0) {
             param = args[0];
             if(null != param) {
@@ -607,8 +607,12 @@ public class PreProcessor extends ImageProcessor {
         
         boolean view = false;
 		PreProcessor aProcessor = new PreProcessor(view);
-        aProcessor.reduceRadarImages(site, "/Volumes/evo512d/_radar_unprocessed_image_to_persist/", "/Volumes/evo512bfat" + FILTERED_DATA_DIR, view, true, true);//, aRadarView);
+		for(int index = 0; index < ApplicationService.RADAR_SITE_IDENTIFIERS.length; index++) {
+        //aProcessor.reduceRadarImages(site, "/Volumes/evo512d/_radar_unprocessed_image_to_persist/", "/Volumes/evo512bfat" + FILTERED_DATA_DIR, view, true, true);//, aRadarView);
+		aProcessor.reduceRadarImages(ApplicationService.RADAR_SITE_IDENTIFIERS[index], "d:/_radar_unprocessed_image_to_persist/", "f:" + FILTERED_DATA_DIR, view, true, true);//, aRadarView);
+		//aProcessor.reduceRadarImages(ApplicationService.RADAR_SITE_IDENTIFIERS[index], "x:/_radar_unprocessed_image_to_persist/", "x:" + FILTERED_DATA_DIR, view, true, true);//, aRadarView);
         //aProcessor.convertToPNG(site, "D", FILTERED_DATA_DIR, "D", FILTERED_DATA_DIR_PNG);
+		}
 	}
 
 	@Override
