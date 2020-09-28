@@ -129,11 +129,12 @@ public class PreProcessor extends ImageProcessor {
     }
 
     public BufferedImage doFilter(int filter, BufferedImage input, int layer) {
-    	return doFilter(new Sweep(), filter,input, layer);
+    	return doFilter(null /*new Sweep()*/, filter,input, layer);
     }
     public BufferedImage doFilter(Sweep sweep, int filter, BufferedImage input, int layer) {
+    	boolean isHistorical = false;
         int height = input.getHeight();
-        BufferedImage croppedImage = new BufferedImage (height, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage croppedImage = new BufferedImage(height, height, BufferedImage.TYPE_INT_RGB);
         // get the historical status of the image - whether it has destructive range and overlay data
         // Look for at least 2 white pixels in any direction from the center
         int h = height >> 1 - 10; // there is always a + in the center
@@ -146,8 +147,11 @@ public class PreProcessor extends ImageProcessor {
         	}
         	if(rangeRingCount > 4) {
         		y = height;
-        		sweep.setIsHistorical(true); 
+        		//sweep.setIsHistorical(true); 
         		System.out.print("H");//istorical Image: " + sweep.getTimestamp());
+        		// set corner pixel
+        		isHistorical = true;
+        		
         	}
         	//System.out.println(h + "," + y + " = " + pColor);        	
         }
@@ -182,6 +186,9 @@ public class PreProcessor extends ImageProcessor {
         g.drawLine(0,height-1, height-1, height -1);
         g.drawLine(height-1,0, height-1, height - 1);
         // set historical flag
+        if(isHistorical) {
+            croppedImage.setRGB(0, 0, RadarSite.PRECIP_INTENSITY_COLOR_CODES[1]);
+        }
         return croppedImage;
     }
 
