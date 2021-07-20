@@ -49,7 +49,7 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.1.1.RELEASE</spring.version>
+        <spring.version>4.3.21.RELEASE</spring.version>
         <eclipselink.version>2.6.0-M3</eclipselink.version>
     </properties>
   <dependencies>
