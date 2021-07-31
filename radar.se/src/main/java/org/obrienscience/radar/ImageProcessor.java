@@ -446,9 +446,9 @@ public abstract class ImageProcessor implements Runnable {
 		}
 	}
 
-    public void reduceRadarImages(String site, String anInputDir, String anOutputDir) {
+    /*public void reduceRadarImages(String site, String anInputDir, String anOutputDir) {
         reduceRadarImages(site, anInputDir, anOutputDir, true, true, true);
-    }
+    }*/
     
     protected int updateCounterPrivate(String site, int counter, int count) {
         // file exists
@@ -460,7 +460,7 @@ public abstract class ImageProcessor implements Runnable {
         return counter;        
     }
     
-    public void reduceRadarImages(String site, String anInputDir, String anOutputDir, boolean display, boolean persist, boolean file) {
+    /*public void reduceRadarImages(String site, String anInputDir, String anOutputDir, boolean display, boolean persist, boolean file) {
         // Setup View with a dummy image
         String filename = null;
         BufferedImage image = null;
@@ -505,7 +505,7 @@ public abstract class ImageProcessor implements Runnable {
                             reducedImage = doFilter(0, input, RadarSite.PRECIP_INTENSITY_COLOR_CODES_SIZE - 1);
                             writeImage(reducedImage, outputPath, "gif");
                             // check performance
-                            //writeImage(input, outputPath, "gif");
+                            writeImage(input, outputPath, "gif");
                             if(display) {
                                 aRadarView.setBufferedImage(reducedImage);
                             }
@@ -536,8 +536,7 @@ public abstract class ImageProcessor implements Runnable {
                 aRadarView = null;
             }
         }
-    }
-
+    }*/
     
     public ForkJoinPool getPool() {
 		return pool;
