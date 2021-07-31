@@ -7,7 +7,7 @@ tar czf radar_lightning-NAT.tgz lightning/NAT
 tar czf radar_lightning-ON-GL.tgz lightning/ON-GL
 tar czf radar_lightning-ONT.tgz lightning/ONT
 tar czf radar_lightning-PAC.tgz lightning/PAC
-tar czf radar_lightning-Prairies.tgz lightning/Praries
+tar czf radar_lightning-Prairies.tgz lightning/Prairies
 tar czf radar_lightning-QU-AC.tgz lightning/QU-AC
 tar czf radar_lightning-QUE.tgz lightning/QUE
 tar czf radar_lightning-WRN.tgz lightning/WRN
