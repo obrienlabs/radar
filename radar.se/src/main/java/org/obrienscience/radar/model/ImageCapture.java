@@ -5,23 +5,21 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import javax.imageio.ImageIO;
 
 
-
 public class ImageCapture {
 
+	public static final String LIGHTNING_URL = "https://weather.gc.ca/data/lightning_images/";
+	public static final String FILE_URI = "/Users/michaelobrien/_capture/";
 	
     public  void delayRandom(long minDelayMS, long maxDelayMS) {
         try {
             long randomTime = minDelayMS + Math.round((Math.random() * maxDelayMS));
-            System.out.println("wait " + randomTime );
+            //System.out.println("wait " + randomTime );
             Thread.sleep(randomTime);
         } catch (Exception e2) {
         	e2.printStackTrace();
@@ -31,8 +29,7 @@ public class ImageCapture {
 	public void get(String prefix, String postfix, String folder) {
 		String timestamp = "202107310420";
 
-		ZoneId zone = ZoneId.of("UTC");
-		ZonedDateTime zdt = ZonedDateTime.now(zone);
+		ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("UTC"));
 		
 		timestamp = new String(
 				Integer.toString(zdt.getYear()));
@@ -62,9 +59,9 @@ public class ImageCapture {
 		
 		BufferedImage image = null;
 		try {
-			URL url = new URL(prefix + timestamp + postfix);
+			URL url = new URL(LIGHTNING_URL + "/" + folder + "_" + timestamp + ".png");
 			image = ImageIO.read(url);
-			ImageIO.write(image, "png", new File("/Users/michaelobrien/_capture/" + 
+			ImageIO.write(image, "png", new File(FILE_URI + 
 			folder + "/" + folder +"_" + timestamp + postfix));
 			System.out.println("captured: " + folder + ":" + timestamp);
 		} catch (MalformedURLException e) {
