@@ -27,11 +27,8 @@ public class ImageCapture {
     }
 	
 	public void get(String prefix, String postfix, String folder) {
-		String timestamp = "202107310420";
-
 		ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("UTC"));
-		
-		timestamp = new String(
+		String timestamp = new String(
 				Integer.toString(zdt.getYear()));
 		int month =  zdt.getMonth().getValue();
 		if(month < 10) {
@@ -65,7 +62,6 @@ public class ImageCapture {
 			folder + "/" + folder +"_" + timestamp + postfix));
 			System.out.println("captured: " + folder + ":" + timestamp);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			System.out.println("skipping: " + folder + ":" + timestamp);
 			//e.printStackTrace();
 		} catch (IOException e) {
