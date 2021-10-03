@@ -1,4 +1,4 @@
-package org.obrienscience.radar.model;
+package org.obrienscience.radar.integration;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,7 +16,7 @@ public class ImageCapture {
 	private String targetDirPrefix;
 	
 	public static final int SLEEP_MS =300000;
-	public static final String LIGHTNING_URL = "https://weather.gc.ca/data/lightning_images/";
+	public static final String LIGHTNING_URL = "https://weather.gc.ca/data/lightning_images";
 	public static final String FILE_URI = "/Users/michaelobrien/_capture/";
 	
     public  void delayRandom(long minDelayMS, long maxDelayMS) {
@@ -29,32 +29,25 @@ public class ImageCapture {
         }
     }
 	
+    private void appendZero(int index, StringBuilder buffer) {
+    	if(index < 10) {
+    		buffer.append("0");
+    	}
+    	buffer.append(Integer.toString(index));
+    }
+    
 	public void get(String prefix, String postfix, String folder) {
 		ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("UTC"));
-		String timestamp = new String(
-				Integer.toString(zdt.getYear()));
-		int month =  zdt.getMonth().getValue();
-		if(month < 10) {
-			timestamp += "0";
-		}
-		timestamp += Integer.toString(month);
-		int day =  zdt.getDayOfMonth();
-		if(day < 10) {
-			timestamp += "0";
-		}
-		timestamp += Integer.toString(day);
-		int hour =  zdt.getHour();
-		if(hour < 10) {
-			timestamp += "0";
-		}
-		timestamp += Integer.toString(hour);
+		StringBuilder timestampB = new StringBuilder(Integer.toString(zdt.getYear()));
+		appendZero(zdt.getMonth().getValue(), timestampB);
+		appendZero(zdt.getDayOfMonth(), timestampB);
+		appendZero(zdt.getHour(), timestampB);
 		int minute = zdt.getMinute();
+		//appendZero(minute, timestampB);
 		String minuteString = Integer.toString(minute);
-		if(minute < 10) {
-			timestamp += "0";
-		}
-		timestamp += minuteString.substring(0, minuteString.length()-1);
-		timestamp += "0";
+		timestampB.append(minuteString.substring(0, minuteString.length() - 1));
+		timestampB.append("0");
+		String timestamp = timestampB.toString();
 		
 		String targetFile;
 		BufferedImage image = null;
@@ -90,12 +83,11 @@ public class ImageCapture {
 	public static void main(String[] args) {
 		ImageCapture cap = new ImageCapture();
 		String param = null;
+		cap.setTargetDirPrefix(FILE_URI);
         if(null != args && args.length > 0) {
             param = args[0];
             if(null != param) {
                 cap.setTargetDirPrefix(param);
-            } else {
-            	cap.setTargetDirPrefix(FILE_URI);
             }
         }
 
