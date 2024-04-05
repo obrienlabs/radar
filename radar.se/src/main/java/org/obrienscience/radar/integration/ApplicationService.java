@@ -101,7 +101,7 @@ public abstract class ApplicationService implements Runnable {
 	public static final long MIN_DELAY_BETWEEN_URL_CAPTURE_MS = 4500;//800;//9667 - 258; // 5 min / 31 sites ( 8 sec or .258 processing time)
     public static final long MAX_DELAY_BETWEEN_URL_CAPTURE_MS = 8900;//2900;
     public static final int SWEEP_INTERVAL_MIN = 10;
-    public static final int NUMBER_RADAR_SITES = 31;
+    public static final int NUMBER_RADAR_SITES = 32;//31;
     public static final int NUMBER_SAT_SITES = 9;
 	public static final String[] RADAR_SITE_IDENTIFIERS = {
 		//"WMN",
@@ -139,7 +139,8 @@ public abstract class ApplicationService implements Runnable {
 		"XPG",
 		"WUJ", // vancouver
 		"XSI", // victoria
-		"XFT"
+		"XFT",
+		"CASFT"
 	};
 	
 	//get_image.cfm?img=201109191940~NATIONAL_PRECIP_RAIN_WEATHEROFFICE_ARC~PRECIP,125,18,MPRATE:URP:NATIONAL:RADAR:GIF
@@ -174,7 +175,9 @@ public abstract class ApplicationService implements Runnable {
 		"Prince George",
 		"Aldergrove", // vancouver
 		"Victoria",
+		"Franktown",
 		"Franktown"
+		
 	};
 
 	/**http://www.weatheroffice.gc.ca/data/satellite/goes_ecan_1070_100.jpg
@@ -229,7 +232,7 @@ public abstract class ApplicationService implements Runnable {
 	public static final String[] HISTORICAL_RADAR_URL_FRAGMENTS = {
 		"_PRECIP_RAIN_WEATHEROFFICE_ARC~PRECIP,125,18,MPRATE",
 		"_CAPPI_RAIN_WEATHEROFFICE_ARC~CAPPI,1.5,AGL,MPRATE"	};
-	public static final int[] HISTORICAL_RADAR_URL_FRAGMENTS_INDEX = { 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+	public static final int[] HISTORICAL_RADAR_URL_FRAGMENTS_INDEX = { 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 	//public static final String[] CURRENT_RADAR_URL_MIDFIX = { "_PRECIP_RAIN_", 	"_CAPPI_RAIN_" }; 	
 	public static final String[] CURRENT_RADAR_URL_MIDFIX = { "_PRECIP_RAIN_", 	"_CAPPI_RAIN_", "_PRECIP_SNOW_", "_COMP_PRECIP_RAIN", "_COMP_PRECIP_SNOW_"};
     //public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };	
@@ -246,7 +249,9 @@ public abstract class ApplicationService implements Runnable {
 	// 20190323 (wmb=cappi)
 	//public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 };// 20130709 prior
 	// 20190720 
-	public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 20130709 prior
+	//public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 };// 20130709 prior
+	// 20240404 adding casft for historical 
+	public static final int[] CURRENT_RADAR_URL_MIDFIX_INDEX = { 0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1 };//
 
 	public static final String[] SITE_GPSS = {
 		"",
@@ -461,6 +466,8 @@ public abstract class ApplicationService implements Runnable {
         // We loop an arbitrary number of iterations inside each thread
         //processUnitOfWork(id);
     	performCapture(null);
+    	
+
     }
 	
 } // ApplicationService
