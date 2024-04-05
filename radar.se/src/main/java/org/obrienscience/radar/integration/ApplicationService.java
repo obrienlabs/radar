@@ -103,6 +103,8 @@ public abstract class ApplicationService implements Runnable {
     public static final int SWEEP_INTERVAL_MIN = 10;
     public static final int NUMBER_RADAR_SITES = 32;//31;
     public static final int NUMBER_SAT_SITES = 9;
+    //   radarSitesArray={"NAT":null,"PYR":null,"PNR":null,"ONT":null,"QUE":null,"ATL":null,"CASBI":"2021-11-22T19:18:00Z","CASDR":"2020-09-03T17:18:00Z","CASET":"2019-07-08T20:40:00Z","CASFT":"2021-08-03T12:54:00Z","CASKR":"2021-06-28T14:06:00Z","CASLA":"2019-11-04T20:12:00Z","CASBV":"2018-12-03T15:30:00Z","CASMR":"2019-11-28T20:06:00Z","CASRF":"2018-12-10T23:18:00Z","CASSN":"2023-07-17T00:00:00Z"};
+
 	public static final String[] RADAR_SITE_IDENTIFIERS = {
 		//"WMN",
 			"CASBV", //18_06
