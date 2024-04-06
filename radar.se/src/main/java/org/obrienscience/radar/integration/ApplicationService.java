@@ -229,7 +229,7 @@ public abstract class ApplicationService implements Runnable {
     public static final String CURRENT_LIGHTNING_URL_POSTFIX = ".png";   
 	//public static final String HISTORICAL_RADAR_URL_PREFIX_PRE_20110920 = "http://www.climate.weatheroffice.gc.ca/radar/get_image.cfm?img=";
     public static final String HISTORICAL_RADAR_URL_PREFIX = "http://www.climate.weatheroffice.gc.ca/radar/image.php?time=";
-    public static final String HISTORICAL_RADAR_URL_SEARCH_PAGE_PREFIX = "http://climate.weather.gc.ca/radar/index_e.html?site=";//http://www.climate.weatheroffice.gc.ca/radar/index_e.html?RadarSite=";
+    public static final String HISTORICAL_RADAR_URL_SEARCH_PAGE_PREFIX = "https://climate.weather.gc.ca/radar/index_e.html?site=";//http://www.climate.weatheroffice.gc.ca/radar/index_e.html?RadarSite=";
 	//public static final String HISTORICAL_RADAR_URL_POSTFIX_PRE_20110920 = ":RADAR:GIF";
 	public static final String[] HISTORICAL_RADAR_URL_FRAGMENTS = {
 		"_PRECIP_RAIN_WEATHEROFFICE_ARC~PRECIP,125,18,MPRATE",
